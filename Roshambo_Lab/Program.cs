@@ -17,26 +17,20 @@ namespace Roshambo_Lab
 
     class RockPlayer : Player
     {
-        public string rockPlayer = "Rock Player";
         public override Roshambo GenerateRoshambo()
         {
             choice = Roshambo.Rock;
-            Console.WriteLine($"{rockPlayer} chose rock!");
-
             return choice;
         }
     }
 
     class RandomPlayer : Player
     {
-        public string randomPlayer = "Random Player";
         public override Roshambo GenerateRoshambo()
         {
             Random rps = new Random();
-            int num = rps.Next(1, 4);
-            Roshambo choice = (Roshambo)num;
-
-            Console.WriteLine($"{randomPlayer} chose {choice}");
+            int num = rps.Next(3);
+            choice = (Roshambo)num;
             return choice;
 
         }
@@ -44,73 +38,109 @@ namespace Roshambo_Lab
 
     class HumanPlayer : Player
     {
-        public override Roshambo GenerateRoshambo()
+
+        public HumanPlayer()
         {
             Console.Write("What is your name? ");
             playerName = Console.ReadLine();
             Console.WriteLine();
+        }
+
+        public override Roshambo GenerateRoshambo()
+        {
+            Console.WriteLine();
             Console.WriteLine($"{playerName}, choose Rock, Paper, or Scissors");
-            string userChoise = Console.ReadLine().ToUpper();
-            if (userChoise == "ROCK")
+            string userChoice = Console.ReadLine().ToUpper();
+            if (userChoice == "ROCK")
             {
                 choice = Roshambo.Rock;
             }
-            else if (userChoise == "PAPER")
+            else if (userChoice == "PAPER")
             {
                 choice = Roshambo.Paper;
             }
-            else if (userChoise == "SCISSORs")
+            else if (userChoice == "SCISSORS")
             {
                 choice = Roshambo.Scissors;
             }
             return choice;
         }
-
-       
     }
 
 
     class Program
     {
-        static void Winner(Player user, Player cpu)
-        {
-            if (user.choice == cpu.choice)
-            {
-                Console.WriteLine("It is a draw!");
-            }
-            else if (user.choice == Roshambo.Rock && cpu.choice == Roshambo.Scissors)
-            {
-                Console.WriteLine($"The winner is {user}");
-            }
-            else
-            {
-                Console.WriteLine($"The winner is {cpu}");
-            }
-        }
 
         static void Main(string[] args)
         {
-            bool playAgain = true;
-            Player opponent;
-            string answer;
-            string userChoice;
-
             HumanPlayer player1 = new HumanPlayer();
-            player1.GenerateRoshambo();
+            bool playAgain = true;
 
             while (playAgain)
             {
                 Console.WriteLine("Would you like to play against the Rock Thrower or a Random Player?");
-                userChoice = Console.ReadLine().ToUpper();
+                string userChoice = Console.ReadLine().ToUpper();
 
                 if (userChoice == "ROCK THROWER")
                 {
-                    opponent = new RockPlayer();
+                    player1.GenerateRoshambo();
+                    RockPlayer rockOpp = new RockPlayer();
+                    rockOpp.GenerateRoshambo();
+
+                    if ((rockOpp.choice == Roshambo.Rock && player1.choice == Roshambo.Rock)
+                       || (rockOpp.choice == Roshambo.Paper && player1.choice == Roshambo.Paper)
+                       || (rockOpp.choice == Roshambo.Scissors && player1.choice == Roshambo.Scissors))
+                    {
+                        Console.WriteLine($"You chose: {player1.choice}. Rock thrower chose: {rockOpp.choice}");
+                        Console.WriteLine("It is a draw!");
+                    }
+
+                    else if ((rockOpp.choice == Roshambo.Rock && player1.choice == Roshambo.Paper)
+                        || (rockOpp.choice == Roshambo.Scissors && player1.choice == Roshambo.Rock)
+                        || (rockOpp.choice == Roshambo.Paper && player1.choice == Roshambo.Scissors))
+                    {
+                        Console.WriteLine($"You chose: {player1.choice}. Rock thrower chose: {rockOpp.choice}");
+                        Console.WriteLine("You win!");
+                    }
+
+                    else if ((rockOpp.choice == Roshambo.Rock && player1.choice == Roshambo.Scissors)
+                        || (rockOpp.choice == Roshambo.Paper && player1.choice == Roshambo.Rock)
+                        || (rockOpp.choice == Roshambo.Scissors && player1.choice == Roshambo.Paper))
+                    {
+                        Console.WriteLine($"You chose: {player1.choice}. Rock thrower chose: {rockOpp.choice}");
+                        Console.WriteLine("You lose!");
+                    }
                 }
 
                 else if (userChoice == "RANDOM PLAYER")
                 {
-                    opponent = new RandomPlayer();
+                    player1.GenerateRoshambo();
+                    RandomPlayer randomOpp = new RandomPlayer();
+                    randomOpp.GenerateRoshambo();
+
+                    if ((randomOpp.choice == Roshambo.Rock && player1.choice == Roshambo.Rock)
+                       || (randomOpp.choice == Roshambo.Paper && player1.choice == Roshambo.Paper)
+                       || (randomOpp.choice == Roshambo.Scissors && player1.choice == Roshambo.Scissors))
+                    {
+                        Console.WriteLine($"You chose: {player1.choice}. Random player chose: {randomOpp.choice}");
+                        Console.WriteLine("It is a draw!");
+                    }
+
+                    else if ((randomOpp.choice == Roshambo.Rock && player1.choice == Roshambo.Paper)
+                        || (randomOpp.choice == Roshambo.Scissors && player1.choice == Roshambo.Rock)
+                        || (randomOpp.choice == Roshambo.Paper && player1.choice == Roshambo.Scissors))
+                    {
+                        Console.WriteLine($"You chose: {player1.choice}. Random player chose: {randomOpp.choice}");
+                        Console.WriteLine("You win!");
+                    }
+
+                    else if ((randomOpp.choice == Roshambo.Rock && player1.choice == Roshambo.Scissors)
+                        || (randomOpp.choice == Roshambo.Paper && player1.choice == Roshambo.Rock)
+                        || (randomOpp.choice == Roshambo.Scissors && player1.choice == Roshambo.Paper))
+                    {
+                        Console.WriteLine($"You chose: {player1.choice}. Random player chose: {randomOpp.choice}");
+                        Console.WriteLine("You lose!");
+                    }
                 }
 
                 else
@@ -118,23 +148,27 @@ namespace Roshambo_Lab
                     Console.WriteLine("That is not a valid choice!");
                 }
 
+                Console.WriteLine();
+                Console.WriteLine("Would you like to play again?");
+                string answer = Console.ReadLine();
+                answer = answer.ToUpper();
+
+                if (answer == "Y" || answer == "YES")
+                {
+                    Console.WriteLine();
+                    playAgain = true;
+                }
+                else
+                {
+                    playAgain = false;
+                    Console.WriteLine("Thanks for playing!");
+                }
+
+                
 
             }
 
-            Console.WriteLine("would you like to play again?");
-            answer = Console.ReadLine();
-            answer = answer.ToUpper();
 
-            if (answer == "Y" || answer == "YES")
-            {
-                playAgain = true;
-            }
-            else
-            {
-                playAgain = false;
-            }
-
-            Console.WriteLine("Thanks for playing!");
 
             Console.ReadKey();
            
