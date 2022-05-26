@@ -1,5 +1,5 @@
-ROSHAMBO: ROCK PAPER SCISSORS
-Objectives: Enumerations, Abstract Classes
+ROSHAMBO: ROCK PAPER SCISSORS;
+Objectives: Enumerations, Abstract Classes;
 
 Task: Create a rock, paper, scissors game.
 
